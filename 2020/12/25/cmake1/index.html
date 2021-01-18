@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="从前一直都是用 Visual Studio 这样的集成的比较好的编译器编写一些简单的 C++ 课程作业, 开始接触 C++ 项目发现主要都在用CMake来编写配置文件, 当然也是因为比较喜欢在Ubuntu系统下配置环境编程hhh, 因此准备相对系统的学习一下 CMake 配置文件编写方法。从朋友那里拷贝了 Milan Yadav 的 CMake 讲解视频, 讲的比较细致。结合 CMake 官方文档">
+  <meta name="description" content="从前一直都是用 Visual Studio 这样的集成的比较好的编译器编写一些简单的 C++ 课程作业, 开始接触 C++ 项目发现很多都在用CMake来编写配置文件, 当然也是因为比较喜欢在Ubuntu系统下编程hhh, 因此准备相对系统的学习一下 CMake 配置文件编写方法。从朋友那里拷贝了 Milan Yadav 的 CMake 讲解视频, 讲的比较细致。结合 CMake 官方文档在这篇博">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CMake学习笔记(未完结)">
 <meta property="og:url" content="http://example.com/2020/12/25/cmake1/index.html">
 <meta property="og:site_name" content="My Blog">
-<meta property="og:description" content="从前一直都是用 Visual Studio 这样的集成的比较好的编译器编写一些简单的 C++ 课程作业, 开始接触 C++ 项目发现主要都在用CMake来编写配置文件, 当然也是因为比较喜欢在Ubuntu系统下配置环境编程hhh, 因此准备相对系统的学习一下 CMake 配置文件编写方法。从朋友那里拷贝了 Milan Yadav 的 CMake 讲解视频, 讲的比较细致。结合 CMake 官方文档">
+<meta property="og:description" content="从前一直都是用 Visual Studio 这样的集成的比较好的编译器编写一些简单的 C++ 课程作业, 开始接触 C++ 项目发现很多都在用CMake来编写配置文件, 当然也是因为比较喜欢在Ubuntu系统下编程hhh, 因此准备相对系统的学习一下 CMake 配置文件编写方法。从朋友那里拷贝了 Milan Yadav 的 CMake 讲解视频, 讲的比较细致。结合 CMake 官方文档在这篇博">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-25T07:50:10.000Z">
-<meta property="article:modified_time" content="2020-12-28T03:43:04.003Z">
+<meta property="article:modified_time" content="2021-01-07T10:36:34.130Z">
 <meta property="article:author" content="KeriCC">
 <meta name="twitter:card" content="summary">
 
@@ -190,7 +190,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-28 11:43:04" itemprop="dateModified" datetime="2020-12-28T11:43:04+08:00">2020-12-28</time>
+                <time title="修改时间：2021-01-07 18:36:34" itemprop="dateModified" datetime="2021-01-07T18:36:34+08:00">2021-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -220,14 +220,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>从前一直都是用 Visual Studio 这样的集成的比较好的编译器编写一些简单的 C++ 课程作业, 开始接触 C++ 项目发现主要都在用CMake来编写配置文件, 当然也是因为比较喜欢在Ubuntu系统下配置环境编程hhh, 因此准备相对系统的学习一下 CMake 配置文件编写方法。从朋友那里拷贝了 Milan Yadav 的 CMake 讲解视频, 讲的比较细致。结合 CMake 官方文档在这篇博客中做一个整理记录。</p>
+        <p>从前一直都是用 Visual Studio 这样的集成的比较好的编译器编写一些简单的 C++ 课程作业, 开始接触 C++ 项目发现很多都在用CMake来编写配置文件, 当然也是因为比较喜欢在Ubuntu系统下编程hhh, 因此准备相对系统的学习一下 CMake 配置文件编写方法。从朋友那里拷贝了 Milan Yadav 的 CMake 讲解视频, 讲的比较细致。结合 <a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/manual/cmake-commands.7.html">CMake 官方文档</a>在这篇博客中做一个整理记录。</p>
 <a id="more"></a>
 
 <p>CMake 用来生成编译程序的 Makefile 文件。CMake 具有跨平台的特点, 即同一个CMake配置文件可以针对不同平台生成相应的 Makefile 文件。使用 CMake 生成可执行文件的流程为: ① 创建 CMakeLists.txt 配置文件。② 执行 cmake &lt;PATH&gt; 指令编译生成 Makefile 文件(&lt;PATH&gt; 为 CMakeLists.txt 所在的路径)。③ 执行 make 指令生成可执行文件。</p>
 <h3 id="CMakeLists-txt-文件格式"><a href="#CMakeLists-txt-文件格式" class="headerlink" title="CMakeLists.txt 文件格式"></a>CMakeLists.txt 文件格式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">command1(arg_a1 arg_a2 arg_a3 ...)</span><br><span class="line">command2(arg_b1 arg_b2 arg_b3 ...)</span><br><span class="line">command3(arg_c1</span><br><span class="line">arg_c2</span><br><span class="line">...)</span><br><span class="line"></span><br><span class="line">command4(arg_d1 arg_d2 arg_d3 ...)</span><br></pre></td></tr></table></figure>
-<h3 id="CMake-基本指令"><a href="#CMake-基本指令" class="headerlink" title="CMake 基本指令"></a>CMake 基本指令</h3><p><code>add_executable(EXEC-NAME SOURCE-FILES)</code> <em>依靠指定的源文件创建可执行文件</em></p>
-<p><code>project(PROJECT-NAME OTHER-INFO)</code><em>设置项目的名字和基础信息</em></p>
-<p><code>cmake_minimum_required(VERSION &lt;min&gt;)</code> <em>设置项目需要的CMake最小版本</em></p>
+<h3 id="CMake-基本指令"><a href="#CMake-基本指令" class="headerlink" title="CMake 基本指令"></a>CMake 基本指令</h3><p><code>add_executable(&lt;EXEC-NAME&gt; &lt;SOURCE-FILES&gt;)</code> <em>依靠指定的源文件创建可执行文件</em></p>
+<p><code>project(&lt;PROJECT-NAME&gt; &lt;OTHER-INFO&gt;)</code><em>设置项目的名字和基础信息</em></p>
+<p><code>cmake_minimum_required(&lt;VERSION&gt; &lt;min&gt;)</code> <em>设置项目需要的CMake最小版本</em></p>
 <p>假设一个项目具有如下的文件结构。主函数所在的 main.cpp 文件捕获命令行的两个整数输入, 通过调用 addition.cpp 文件中的 add 函数做加法运算, 调用 division.cpp 文件中的 div 做除法运算, 调用 print_result.cpp 文件中的 print 函数将运算结果输出到控制台。三个 .cpp 源文件的函数均在 .h 头文件中进行了声明, main.cpp 中通过 <code>#include &quot;**.h&quot;</code> 引入三个头文件。</p>
 <pre>
 project
@@ -244,11 +244,29 @@ project
 
 <p>针对此项目,可编写简单的 CMakeLists.txt 配置文件如下。在 build 文件夹下执行 <code>cmake ..</code> 生成 Makefile, 然后执行 <code>make</code> 生成可执行文件 calculator。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.0.0)</span><br><span class="line"></span><br><span class="line">project(Calculator_Project)</span><br><span class="line"></span><br><span class="line">add_executable(calculator </span><br><span class="line">main.cpp </span><br><span class="line">addition.cpp</span><br><span class="line">division.cpp</span><br><span class="line">print_result.cpp)</span><br></pre></td></tr></table></figure>
-<h3 id="CMake-链接库"><a href="#CMake-链接库" class="headerlink" title="CMake 链接库"></a>CMake 链接库</h3><p><code>add_library(LIBRARY_NAME SOURCE-FILES)</code> <em>创建链接库</em></p>
-<p><code>target_link_libraries(EXECUTABLE &lt;PRIVATE|PUBLIC|INTERFACE&gt; LIB1 LIB2)</code> <em>指明可执行文件的依赖库,关于 PRIVATE, PUBLIC 和 INTERFACE 属性的区别见 <a target="_blank" rel="noopener" href="https://leimao.github.io/blog/CMake-Public-Private-Interface/">CMake: Public VS Private VS Interface</a></em></p>
-<p><code>add_library</code> 函数只是创建了一个链接库, 可以理解为处于定义阶段, 没有被使用。配合 <code>target_link_libraries</code> 将链接库与可执行文件关联起来, 指明依赖关系。对于上面的项目, 可以修改 CMakeLists.txt 文件为:</p>
+<h3 id="CMake-库"><a href="#CMake-库" class="headerlink" title="CMake 库"></a>CMake 库</h3><p><code>add_library(&lt;LIBRARY_NAME&gt; &lt;SOURCE-FILES&gt;)</code> <em>创建库</em></p>
+<p><code>target_link_libraries(&lt;EXECUTABLE&gt; &#123;PRIVATE|PUBLIC|INTERFACE&#125; &lt;LIB1&gt; &lt;LIB2&gt;)</code> <em>指明可执行文件的依赖库,关于 PRIVATE, PUBLIC 和 INTERFACE 属性的区别见 <a target="_blank" rel="noopener" href="https://leimao.github.io/blog/CMake-Public-Private-Interface/">CMake: Public VS Private VS Interface</a></em></p>
+<p><code>add_library</code> 函数只是创建了一个库, 可以理解为处于定义阶段, 没有被使用。配合 <code>target_link_libraries</code> 将库与可执行文件关联起来, 指明依赖关系。对于上面的项目, 可以修改 CMakeLists.txt 文件为:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.0.0)</span><br><span class="line"></span><br><span class="line">project(Calculator_Project)</span><br><span class="line"></span><br><span class="line">add_library(my_math </span><br><span class="line">addition.cpp</span><br><span class="line">division.cpp)</span><br><span class="line"></span><br><span class="line">add_library(my_print </span><br><span class="line">print_result.cpp)</span><br><span class="line"></span><br><span class="line">add_executable(calculator main.cpp)</span><br><span class="line"></span><br><span class="line">target_link_libraries(calculator PRIVATE my_math my_print)</span><br></pre></td></tr></table></figure>
-<h3 id="CMake-路径相关指令"><a href="#CMake-路径相关指令" class="headerlink" title="CMake 路径相关指令"></a>CMake 路径相关指令</h3><p>修改项目文件结构如下。一个”简单”的 CMakeLists.txt 的修改方式为将 <code>add_library</code> 中相应的 addition.cpp 修改为相对路径 my_math_dir/addition.cpp。然而这对于比较大的项目来说反而会使配置文件编写复杂化。因此我们介绍CMake路径相关的指令函数。</p>
+<h3 id="CMake-头文件"><a href="#CMake-头文件" class="headerlink" title="CMake 头文件"></a>CMake 头文件</h3><p>当源文件和头文件处于同一个文件夹的时候, 编译器可以直接找到相应的头文件, 不需要进行配置, 但当原文件和头文件不在同一个目录的情况下(很多项目都是将头文件放在 include 目录下, 原文件放在 src 目录下), 那么就需要我们在配置文件中明确指出头文件的查找路径。新的文件结构如下。</p>
+<pre>
+project
+├── CMakeLists.txt
+├── build
+├── include
+│   ├── addition.h
+│   ├── print_result.h
+│   └── division.h
+├── main.cpp
+├── addition.cpp
+├── division.cpp
+└── print_result.cpp
+</pre>
+
+<p><code>target_include_directories(&lt;TARGET&gt; &lt;scope&gt; &lt;DIR1&gt; &lt;DIR2&gt; ...)</code> <em>指明编译目标文件所需的头文件路径</em></p>
+<p>其中<code>TARGRT</code>必须是已经通过<code>add_executable</code>或<code>add_library</code>定义过的可执行文件或库文件。<code>&lt;scope&gt;</code> 可以为 <code>PRIVATE/PUBLIC/INTERFACE</code>。 修改 CMakeLists.txt 文件如下即可实现头文件的查找。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#project&#x2F;my_math_dir&#x2F;CMakeLists.txt------------</span><br><span class="line">cmake_minimum_required(VERSION 3.0.0)</span><br><span class="line"></span><br><span class="line">project(Calculator_Project)</span><br><span class="line"></span><br><span class="line">add_library(my_math </span><br><span class="line">addition.cpp</span><br><span class="line">division.cpp)</span><br><span class="line"></span><br><span class="line">target_include_libraries(my_math PUBLIC include)</span><br><span class="line"></span><br><span class="line">add_library(my_print </span><br><span class="line">print_result.cpp)</span><br><span class="line"></span><br><span class="line">target_include_libraries(my_print PUBLIC include)</span><br><span class="line"></span><br><span class="line">add_executable(calculator main.cpp)</span><br><span class="line"></span><br><span class="line">target_link_libraries(calculator PRIVATE my_math my_print)</span><br></pre></td></tr></table></figure>
+<h3 id="层级CMakeLists-txt"><a href="#层级CMakeLists-txt" class="headerlink" title="层级CMakeLists.txt"></a>层级CMakeLists.txt</h3><p>修改项目文件结构如下。一个”简单”的 CMakeLists.txt 的修改方式为将 <code>add_library</code> 中相应的 addition.cpp 修改为相对路径 my_math_dir/addition.cpp。然而这对于比较大的项目来说反而会使配置文件编写复杂化。因此我们介绍CMake路径相关的指令函数。</p>
 <pre>
 project
 ├── CMakeLists.txt
@@ -264,37 +282,72 @@ project
     └── print_result.cpp
 </pre>
 
-<p><code>add_subdirectory(SOURCE_DIR)</code> <em>为当前的编译环境添加一个子目录</em></p>
+<p><code>add_subdirectory(&lt;SOURCE_DIR&gt;)</code> <em>为当前的编译环境添加一个子目录</em></p>
 <p>主目录和子目录的文件查找通过层级 CMakeLists.txt 文件实现, 这一点与 Python 中的 __init__.py 文件十分相似。<code>SOURCE_DIR</code> 下应该包含程序文件以及一个CMakeLists.txt 文件。在 my_math_dir 和 my_print_dir 路径下分别新建一个 CMakeLists.txt 文件, 修改CMakeLists.txt文件如下。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#project&#x2F;CMakeLists.txt------------------------</span><br><span class="line">cmake_minimum_required(VERSION 3.0.0)</span><br><span class="line"></span><br><span class="line">project(Calculator_Project)</span><br><span class="line"></span><br><span class="line">add_subdirectory(my_math_dir)</span><br><span class="line">add_subdirectory(my_print_dir)</span><br><span class="line"></span><br><span class="line">add_executable(calculator main.cpp)</span><br><span class="line"></span><br><span class="line">target_link_libraries(calculator PRIVATE my_math my_print)</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#project&#x2F;my_math_dir&#x2F;CMakeLists.txt------------</span><br><span class="line">add_library(my_math </span><br><span class="line">addition.cpp</span><br><span class="line">division.cpp)</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#project&#x2F;my_print_dir&#x2F;CMakeLists.txt-----------</span><br><span class="line">add_library(my_print </span><br><span class="line">print_result.cpp)</span><br></pre></td></tr></table></figure>
-<p>当源文件和头文件处于同一个文件夹的时候, 编译器可以直接找到相应的头文件, 不需要进行配置, 但当原文件和头文件不在同一个目录的情况下(很多项目都是将头文件放在 include 目录下, 原文件放在 src 目录下), 那么就需要我们在配置文件中明确指出头文件的查找路径。新的文件结构如下。</p>
+<h3 id="CMake-安装自定义库"><a href="#CMake-安装自定义库" class="headerlink" title="CMake 安装自定义库"></a>CMake 安装自定义库</h3><p>使用CMake安装自定义库的步骤如下: ①将头文件和编译好的库文件拷贝到 <code>/usr/local</code> 文件夹下 ( 该文件夹是 linux 系统的默认搜索路径, 该路径下的 <code>include</code> 子目录下存放头文件, <code>lib</code> 子目录下存放编译好的库文件)。②在 <code>/usr/local/lib</code> 下创建 <code>XX-config.cmake</code> 文件 ( <code>XX</code> 替换为自定义库的名称)。下面先对使用的指令和思路进行大致的说明, 然后以一个网络编程的自定义库实例来帮助更好的理解。</p>
+<p><code>install(FILES &lt;FILE_NAME&gt; DESTINATION &lt;DIR1&gt;)</code> <em>将 FILE_NAME 指代的头文件拷贝到 DIR1 目录下</em></p>
+<p><code>install(TARGETS &lt;TARGET&gt; EXPORT &lt;EXPORT_NAME&gt; DESTINATION &lt;DIR2&gt;)</code> <em>将 TARGET 指代的库文件拷贝到 DIR2 目录下</em></p>
+<p><code>install(EXPORT &lt;EXPORT_NAME&gt; FILE &lt;XX-config.cmake&gt; DESTINATION &lt;DIR2&gt;)</code> <em>创建 XX-config.cmake 文件, 注意这里的 <code>DIR2</code> 应该和上一条指令的 <code>DIR2</code> 一致, <code>EXPORT_NAME</code> 也和上一条指令一致</em></p>
+<p>通过 <code>cmake ..</code> 和 <code>make</code> 编译完成后 <code>FILE_NAME</code> 和 <code>TARGETS</code> 所指代的头文件和库文件并不会被拷贝到 <code>DIR1</code> 和 <code>DIR2</code> 中。这两条指令可以初步的理解为库安装过程中的一个配置规则。需要使用 <code>sudo make install</code> 指令才可以完成拷贝过程。<code>DIR1</code> 一般为 <code>/usr/local/include/XX</code>, <code>DIR2</code> 一般为 <code>/usr/local/lib/XX</code>, 其中 <code>XX</code> 为自定义库的名称。</p>
+<p>下面我们自定义一个UNIX网络编程库 my_net, 文件结构如下。unp.h 文件中包含函数的声明。</p>
 <pre>
-project
+my_net
 ├── CMakeLists.txt
 ├── build
-├── main.cpp
-├── my_math_dir
-│   ├── include
-│   │   ├── addition.h
-│   │   └── division.h
-│   ├── src
-│   │   ├── addition.cpp
-│   │   └── division.cpp
-│   └── CMakeLists.txt
-└── my_print_dir
-    ├── include
-    │   └── print_result.h
-    ├── src
-    │   └── print_result.cpp
-    └── CMakeLists.txt
+├── include
+│   └── unp.h
+└── lib
+    ├── error.c
+    ├── readn.c
+    ├── wraplib.c
+    ├── wrapsock.c
+    ├── wrapstdio.c
+    ├── wrapunix.c
+    └── writen.c
 </pre>
 
-<p><code>target_include_directories(TARGET &lt;scope&gt; DIR1 DIR2 ...)</code> <em>指明编译目标文件所需的头文件路径</em></p>
-<p>其中<code>TARGRT</code>必须是已经通过<code>add_executable</code>或<code>add_library</code>定义过的可执行文件或库文件。<code>&lt;scope&gt;</code> 可以为 <code>PRIVATE/PUBLIC/INTERFACE</code>。 修改 CMakeLists.txt 文件如下即可实现头文件的查找。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#project&#x2F;my_math_dir&#x2F;CMakeLists.txt------------</span><br><span class="line">add_library(my_math </span><br><span class="line">src&#x2F;addition.cpp</span><br><span class="line">src&#x2F;division.cpp)</span><br><span class="line"></span><br><span class="line">target_include_directories(my_math PUBLIC include)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#project&#x2F;my_print_dir&#x2F;CMakeLists.txt-----------</span><br><span class="line">add_library(my_print </span><br><span class="line">src&#x2F;print_result.cpp)</span><br><span class="line"></span><br><span class="line">target_include_directories(my_print PUBLIC include)</span><br></pre></td></tr></table></figure>
+<p>编写 CMakeLists.txt 文件如下, 其中 <code>$&#123;&#125;</code> 内的是 CMAKE 变量, <code>$&#123;&#125;</code> 表示对变量取值。关于变量的内容在后续进行说明, 此处只需知道 <code>$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;</code> 表示CMakeLists.txt 所在目录的绝对路径, <code>$&#123;CMAKE_INSTALL_PREFIX&#125;</code> 表示字符串 /usr/local 即可。在 my_net/build 文件夹下一次执行 <code>cmake ..</code>, <code>make</code>, <code>sudo make install</code> 即可完成自定义库的安装。同时可以看到 /usr/local/include/my_net 路径下出现了 unp.h 文件, /usr/local/lib/my_net 路径下出现了 libmy_net.a 和 my_net-config.cmake 文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#my_net&#x2F;CMakeLists.txt------------</span><br><span class="line">cmake_minimum_required(VERSION 3.5)</span><br><span class="line"></span><br><span class="line">project(MY_NET)</span><br><span class="line"></span><br><span class="line">add_library(my_net</span><br><span class="line">lib&#x2F;error.c</span><br><span class="line">lib&#x2F;readn.c</span><br><span class="line">lib&#x2F;wraplib.c</span><br><span class="line">lib&#x2F;wrapsock.c</span><br><span class="line">lib&#x2F;wrapstdio.c</span><br><span class="line">lib&#x2F;wrapunix.c</span><br><span class="line">lib&#x2F;writen.c)</span><br><span class="line"></span><br><span class="line">target_include_directories(my_net PUBLIC</span><br><span class="line">$&lt;INSTALL_INTERFACE:include&gt;</span><br><span class="line">$&lt;BUILD_INTERFACE:$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;&#x2F;include&gt;)</span><br><span class="line"></span><br><span class="line">install(FILES $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;&#x2F;include&#x2F;unp.h DESTINATION $&#123;CMAKE_INSTALL_PREFIX&#125;&#x2F;include&#x2F;my_net)</span><br><span class="line"></span><br><span class="line">install(TARGETS my_net EXPORT my_export DESTINATION $&#123;CMAKE_INSTALL_PREFIX&#125;&#x2F;lib&#x2F;my_net)</span><br><span class="line"></span><br><span class="line">install(EXPORT my_export FILE my_net-config.cmake DESTINATION $&#123;CMAKE_INSTALL_PREFIX&#125;&#x2F;lib&#x2F;my_net)</span><br></pre></td></tr></table></figure>
+<p>有一点值得注意的是, 上面的 CMakeLists.txt 文件中我们没有直接使用 <code>target_include_directories(my_net PUBLIC include)</code> 来查找头文件, 我的理解是需要对安装和编译的头文件做区分, 避免混淆。这部分还有待细细考究, 目前可以先记住这种模式。</p>
+<h3 id="CMake-使用外部库-External-Package"><a href="#CMake-使用外部库-External-Package" class="headerlink" title="CMake 使用外部库 (External Package)"></a>CMake 使用外部库 (External Package)</h3><p><code>find_package(&lt;PACKAGE_NAME&gt; REQUIRED)</code> <em>查找并导入外部库的信息, <code>REQUIRED</code> 表示该库是必需的, 查找不到会报错</em></p>
+<p>以上面的 my_net 为例, 说明当我们的程序中需要使用这个库时, 如何编写 CMakeLists.txt 文件。以回显服务器的服务器端为例, 文件结构如下。main.c 为程序入口文件。在 tcpserv.h 中通过 #include “my_net/unp.h” 引用 my_net 外部库。 </p>
+<pre>
+tcpserv
+├── CMakeLists.txt
+├── build
+├── main.c
+├── str_echo.c
+└── tcpserv.h
+</pre>
+
+<p>编写CMakeLists.txt文件如下, 即可成功使用 my_net 库。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#tcpserv&#x2F;CMakeLists.txt------------</span><br><span class="line">cmake_minimum_required(VERSION 3.5)</span><br><span class="line"></span><br><span class="line">project(tcpserv)</span><br><span class="line"></span><br><span class="line">find_package(my_net REQUIRED)</span><br><span class="line"></span><br><span class="line">add_executable(tcpserv </span><br><span class="line">main.c </span><br><span class="line">str_echo.c)</span><br><span class="line"></span><br><span class="line">target_link_libraries(tcpserv my_net)</span><br></pre></td></tr></table></figure>
+<h3 id="CMake-基础语法"><a href="#CMake-基础语法" class="headerlink" title="CMake 基础语法"></a>CMake 基础语法</h3><h4 id="1-message"><a href="#1-message" class="headerlink" title="1. message"></a>1. message</h4><p><code>message(&lt;MODE&gt; &quot;message&quot;)</code> <em>显示字符串</em>  </p>
+<h4 id="2-常规变量"><a href="#2-常规变量" class="headerlink" title="2. 常规变量"></a>2. 常规变量</h4><p><code>set(&lt;VARIABLE_NAME&gt; &lt;VARIABLE_VALUE&gt;)</code> <em>创建常规变量</em></p>
+<p>CMake 中的所有变量都是 String 类型的。变量被创建后, 可以通过 <code>$&#123;&lt;VARIABLE_NAME&gt;&#125;</code> 来获取该变量所表示的字符串, 称为解引用 (dereferenced)。 CMake 支持多层解引用, 若变量 A 所表示的字符串恰好为变量 B 的名字, 那么 <code>$&#123;$&#123;A&#125;&#125;</code> 为 B 所表示的字符串。如下例, 输出为 Keri。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set(NAME &quot;BOB&quot;)</span><br><span class="line">set(BOB &quot;Keri&quot;)</span><br><span class="line">message(&quot;$&#123;$&#123;NAME&#125;&#125;&quot;)</span><br></pre></td></tr></table></figure>
+<h4 id="3-字符串"><a href="#3-字符串" class="headerlink" title="3. 字符串"></a>3. 字符串</h4><p>CMake 字符串的两种方式: ① 双引号内所有内容 ② 以空格分隔, 每个单词是一个字符串。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">set(NAME &quot;BOB&quot;)</span><br><span class="line">set(BOB &quot;Keri&quot;)</span><br><span class="line"></span><br><span class="line">message(hello world &quot;$&#123;$&#123;NAME&#125;&#125;&quot;)</span><br><span class="line">message(&quot;hello world $&#123;$&#123;NAME&#125;&#125;&quot;)</span><br></pre></td></tr></table></figure>
+<p>输出为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">helloworldKeri</span><br><span class="line">hello world Keri</span><br></pre></td></tr></table></figure>
+<h4 id="4-List"><a href="#4-List" class="headerlink" title="4. List"></a>4. List</h4><p>多个字符串以字符分隔或以分号分隔可以组成List。下面的一行代码创建一个List变量 VAR, VAR 由6个字符串组成 [ “a”, “b”, “c”, “d”, “2.718”, “hello there” ]。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set(VAR a b c;d 2.718 &quot;hello there&quot;)</span><br></pre></td></tr></table></figure>
+<p><code>list(&lt;SUBCOMMAND&gt; &lt;LIST_NAME&gt; &lt;ARG&gt; &lt;RETURN_VARIABLE&gt;)</code> <em>List 操作指令, <code>&lt;SUBCOMMAND&gt;</code> 可以是 APPEND,INSERT,GET 等</em></p>
+<p>关于字符串和 List 有一些迷惑点(关于双引号和分号), 这里没有做说明, 我认为平时只要确保在写字符串时加双引号, 就可以避免这些问题。没必要自己为难自己。</p>
+<h4 id="5-条件语句"><a href="#5-条件语句" class="headerlink" title="5. 条件语句"></a>5. 条件语句</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">if(&lt;condition&gt;)</span><br><span class="line">    &lt;commands&gt;</span><br><span class="line">elseif(&lt;condition&gt;)</span><br><span class="line">    &lt;commands&gt;</span><br><span class="line">else</span><br><span class="line">    &lt;commands&gt;</span><br><span class="line">endif()</span><br></pre></td></tr></table></figure>
+<p><code>1, ON, YES, TRUE, Y, a non-zero number</code> <em>TRUE 常量</em></p>
+<p><code>0, OFF, NO, FALSE, N, IGNORE, NOTFOUND, the empty string, string ending with -NOTFOUND</code> <em>FALSE 常量</em></p>
+<p>除了上述常量值之外的则被认为是变量或字符串, 若 &lt;condition&gt; 为变量, 相当于自带解引用, 即根据该变量所表示的字符串来进行判断。 关于 &lt;condition&gt; 还有一些特殊的关键字 (这里列举一部分):</p>
+<p>一元判断:  <code>DEFINED</code>, <code>COMMAND</code> 和 <code>EXISTS</code>, 分别用来判断变量, 命令和路径是否存在。</p>
+<p>二元判断: <code>STRLESS</code>, <code>STRGREATER</code>, <code>STREQUAL</code> 用来比较两个字符串。</p>
+<p>布尔运算符: <code>NOT</code>, <code>AND</code>, <code>OR</code> 与 python 相似。</p>
+<h4 id="6-循环语句"><a href="#6-循环语句" class="headerlink" title="6. 循环语句"></a>6. 循环语句</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">while(&lt;condition&gt;)</span><br><span class="line">    &lt;commands&gt;</span><br><span class="line">endwhile()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(&lt;loop_variable&gt; &lt;items&gt;)</span><br><span class="line">    &lt;commands&gt;</span><br><span class="line">endforeach()</span><br></pre></td></tr></table></figure>
+<p>foreach 可以使用 RANGE 关键字, 如 <code>foreach(x RANGE 10)</code>, <code>foreach(x RANGE 10 20)</code>, <code>foreach(x RANGE 10 20 3)</code>。RANGE 关键字后分别为 &lt;START&gt; &lt;END&gt; &lt;STEP&gt;, RANGE 的范围 &lt;START&gt; 和 &lt;END&gt; 均包含在内。</p>
+
     </div>
 
     
@@ -371,7 +424,7 @@ project
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#CMakeLists-txt-%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">CMakeLists.txt 文件格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMake-%E5%9F%BA%E6%9C%AC%E6%8C%87%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">CMake 基本指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMake-%E9%93%BE%E6%8E%A5%E5%BA%93"><span class="nav-number">3.</span> <span class="nav-text">CMake 链接库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMake-%E8%B7%AF%E5%BE%84%E7%9B%B8%E5%85%B3%E6%8C%87%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">CMake 路径相关指令</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#CMakeLists-txt-%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">CMakeLists.txt 文件格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMake-%E5%9F%BA%E6%9C%AC%E6%8C%87%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">CMake 基本指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMake-%E5%BA%93"><span class="nav-number">3.</span> <span class="nav-text">CMake 库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMake-%E5%A4%B4%E6%96%87%E4%BB%B6"><span class="nav-number">4.</span> <span class="nav-text">CMake 头文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%82%E7%BA%A7CMakeLists-txt"><span class="nav-number">5.</span> <span class="nav-text">层级CMakeLists.txt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMake-%E5%AE%89%E8%A3%85%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BA%93"><span class="nav-number">6.</span> <span class="nav-text">CMake 安装自定义库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMake-%E4%BD%BF%E7%94%A8%E5%A4%96%E9%83%A8%E5%BA%93-External-Package"><span class="nav-number">7.</span> <span class="nav-text">CMake 使用外部库 (External Package)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMake-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95"><span class="nav-number">8.</span> <span class="nav-text">CMake 基础语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-message"><span class="nav-number">8.1.</span> <span class="nav-text">1. message</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%B8%B8%E8%A7%84%E5%8F%98%E9%87%8F"><span class="nav-number">8.2.</span> <span class="nav-text">2. 常规变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">8.3.</span> <span class="nav-text">3. 字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-List"><span class="nav-number">8.4.</span> <span class="nav-text">4. List</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E6%9D%A1%E4%BB%B6%E8%AF%AD%E5%8F%A5"><span class="nav-number">8.5.</span> <span class="nav-text">5. 条件语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5"><span class="nav-number">8.6.</span> <span class="nav-text">6. 循环语句</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
