@@ -28,7 +28,7 @@
 <meta property="og:description" content="C++使用静态内存来保存局部静态对象,类静态成员以及全局变量。栈内存用来保存定义在函数内的非静态对象。堆(动态内存)用来存储动态分配的对象。正确的管理动态内存是十分棘手的。C++11提供了智能指针来管理动态分配的对象,很好的解决了这一难题。本文研究shared_ptr和unique_ptr两种智能指针的用法,并探究为什么要使用智能指针, 选择哪种智能指针。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-20T12:31:21.000Z">
-<meta property="article:modified_time" content="2021-03-20T14:32:40.832Z">
+<meta property="article:modified_time" content="2021-03-21T03:02:44.190Z">
 <meta property="article:author" content="KeriCC">
 <meta name="twitter:card" content="summary">
 
@@ -182,10 +182,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-20 20:31:21 / 修改时间：22:32:40" itemprop="dateCreated datePublished" datetime="2021-03-20T20:31:21+08:00">2021-03-20</time>
+              <time title="创建时间：2021-03-20 20:31:21" itemprop="dateCreated datePublished" datetime="2021-03-20T20:31:21+08:00">2021-03-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-21 11:02:44" itemprop="dateModified" datetime="2021-03-21T11:02:44+08:00">2021-03-21</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -229,10 +235,11 @@
 <li>确保对引用计数的跟踪, 避免容器内的遗漏</li>
 </ul>
 <h3 id="智能指针-unique-ptr类"><a href="#智能指针-unique-ptr类" class="headerlink" title="智能指针-unique_ptr类"></a>智能指针-unique_ptr类</h3><p>unique_ptr拥有它所指向的对象, 与shared_ptr不同, unique_ptr与对象是一一对应关系。当unique_ptr被销毁时,它所指向的对象也被销毁。</p>
-<h4 id="unique-ptr-定义"><a href="#unique-ptr-定义" class="headerlink" title="unique_ptr 定义"></a>unique_ptr 定义</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">unique_ptr&lt;T&gt; p;    &#x2F;&#x2F; p 初始化为一个空智能指针</span><br><span class="line">unique_ptr&lt;T&gt; p(new T(args));   &#x2F;&#x2F; p 指向一个T对象,拥有所有权</span><br></pre></td></tr></table></figure>
-<h4 id="unique-ptr-操作"><a href="#unique-ptr-操作" class="headerlink" title="unique_ptr 操作"></a>unique_ptr 操作</h4><p>由于unique_ptr拥有所指向的对象,因此不支持普通的拷贝或赋值操作, 取而代之, 通过release和reset操作修改对象的所有权。</p>
+<h4 id="unique-ptr-定义"><a href="#unique-ptr-定义" class="headerlink" title="unique_ptr 定义"></a>unique_ptr 定义</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">unique_ptr&lt;T&gt; u;    &#x2F;&#x2F; u 初始化为一个空智能指针</span><br><span class="line">unique_ptr&lt;T&gt; u(new T(args));   &#x2F;&#x2F; u 指向一个T对象,拥有所有权</span><br><span class="line">unique_ptr&lt;T[]&gt; u;  &#x2F;&#x2F; u 可以指向一个动态分配的数组</span><br><span class="line">unique_ptr&lt;T[]&gt; u(p);   &#x2F;&#x2F; u 指向 内置指针 p 所指向的动态数组</span><br><span class="line">u[i]    &#x2F;&#x2F; 当 unique_ptr u 指向一个数组时, 返回其所指向的第i个对象 </span><br></pre></td></tr></table></figure>
+<h4 id="unique-ptr-操作"><a href="#unique-ptr-操作" class="headerlink" title="unique_ptr 操作"></a>unique_ptr 操作</h4><p>由于unique_ptr拥有所指向的对象,因此不支持普通的拷贝或赋值操作(允许对即将销毁的对象的移动,比如局部变量作为函数返回值)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">u   &#x2F;&#x2F; 将智能指针 u 用作条件判断, 若 u 指向一个对象, 则为true</span><br><span class="line">*u  &#x2F;&#x2F; 解引用 u, 获取 u 所指向的对象</span><br><span class="line">u.get() &#x2F;&#x2F; 返回 u 中保存的指针</span><br><span class="line">swap(u, v)  &#x2F;&#x2F; 交换 u 和 v 中的指针</span><br><span class="line">u &#x3D; nullptr &#x2F;&#x2F; 释放 u 指向的对象, 并置 u 为空</span><br><span class="line">u.reset()   &#x2F;&#x2F; 释放 u 指向的对象</span><br><span class="line">u.release() &#x2F;&#x2F; u 释放对象的控制权, 返回指向对象的指针, 并置 u 为空</span><br><span class="line">u.reset(q)  &#x2F;&#x2F; 如果 q 是内置指针, u 释放掉原有的对象(如果有), 更新为指向这个对象</span><br></pre></td></tr></table></figure>
-<h4 id="unique-ptr-所有权"><a href="#unique-ptr-所有权" class="headerlink" title="unique_ptr 所有权"></a>unique_ptr 所有权</h4><h4 id="unique-ptr-陷阱"><a href="#unique-ptr-陷阱" class="headerlink" title="unique_ptr 陷阱"></a>unique_ptr 陷阱</h4><h3 id="什么时候使用智能指针-使用哪种指针"><a href="#什么时候使用智能指针-使用哪种指针" class="headerlink" title="什么时候使用智能指针, 使用哪种指针 ?"></a>什么时候使用智能指针, 使用哪种指针 ?</h3>
+<h4 id="unique-ptr-所有权"><a href="#unique-ptr-所有权" class="headerlink" title="unique_ptr 所有权"></a>unique_ptr 所有权</h4><p>通过release和reset操作修改对象的所有权。</p>
+<h3 id="什么时候使用智能指针-使用哪种指针"><a href="#什么时候使用智能指针-使用哪种指针" class="headerlink" title="什么时候使用智能指针, 使用哪种指针 ?"></a>什么时候使用智能指针, 使用哪种指针 ?</h3>
     </div>
 
     
@@ -309,7 +316,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-shared-ptr%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">智能指针-shared_ptr类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#shared-ptr-%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">shared_ptr 定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shared-ptr-%E6%93%8D%E4%BD%9C"><span class="nav-number">1.2.</span> <span class="nav-text">shared_ptr 操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shared-ptr-%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">shared_ptr 引用计数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shared-ptr-%E9%99%B7%E9%98%B1"><span class="nav-number">1.4.</span> <span class="nav-text">shared_ptr 陷阱</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-unique-ptr%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">智能指针-unique_ptr类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#unique-ptr-%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">unique_ptr 定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unique-ptr-%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.</span> <span class="nav-text">unique_ptr 操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unique-ptr-%E6%89%80%E6%9C%89%E6%9D%83"><span class="nav-number">2.3.</span> <span class="nav-text">unique_ptr 所有权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unique-ptr-%E9%99%B7%E9%98%B1"><span class="nav-number">2.4.</span> <span class="nav-text">unique_ptr 陷阱</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%BD%BF%E7%94%A8%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-%E4%BD%BF%E7%94%A8%E5%93%AA%E7%A7%8D%E6%8C%87%E9%92%88"><span class="nav-number">3.</span> <span class="nav-text">什么时候使用智能指针, 使用哪种指针 ?</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-shared-ptr%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">智能指针-shared_ptr类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#shared-ptr-%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">shared_ptr 定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shared-ptr-%E6%93%8D%E4%BD%9C"><span class="nav-number">1.2.</span> <span class="nav-text">shared_ptr 操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shared-ptr-%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">shared_ptr 引用计数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shared-ptr-%E9%99%B7%E9%98%B1"><span class="nav-number">1.4.</span> <span class="nav-text">shared_ptr 陷阱</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-unique-ptr%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">智能指针-unique_ptr类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#unique-ptr-%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">unique_ptr 定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unique-ptr-%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.</span> <span class="nav-text">unique_ptr 操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unique-ptr-%E6%89%80%E6%9C%89%E6%9D%83"><span class="nav-number">2.3.</span> <span class="nav-text">unique_ptr 所有权</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%BD%BF%E7%94%A8%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-%E4%BD%BF%E7%94%A8%E5%93%AA%E7%A7%8D%E6%8C%87%E9%92%88"><span class="nav-number">3.</span> <span class="nav-text">什么时候使用智能指针, 使用哪种指针 ?</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
