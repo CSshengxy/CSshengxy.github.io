@@ -155,6 +155,89 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/25/tcpbasic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="KeriCC">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/25/tcpbasic/" class="post-title-link" itemprop="url">TCP基础概念</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-25 16:12:34" itemprop="dateCreated datePublished" datetime="2021-03-25T16:12:34+08:00">2021-03-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-29 10:58:17" itemprop="dateModified" datetime="2021-03-29T10:58:17+08:00">2021-03-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TCP-IP%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">TCP/IP网络编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<h3 id="Nagle-算法"><a href="#Nagle-算法" class="headerlink" title="Nagle 算法"></a>Nagle 算法</h3><ol>
+<li>问题: 发送方的应用进程把待发送的数据逐个字节地送到发送缓存区,若TCP直接发送,那么利用率为1/41。  </li>
+<li>目标: 控制发送缓存区内报文段发送的时机。解决小包导致TCP传输效率低的问题。  </li>
+<li>解决方法: 若发送方应用进程逐字节的将数据送入发送缓存区,则发送方就先把第一个数据字节先发送出去,把后面到达的数据字节都缓存起来,等到发送方收到第一个数据字节的确认后,再把剩余的数据打包成一个报文段发送出去,依次循环。  </li>
+<li>关键点: ① 将较少的数据组装成大的报文段 ② 在收到前一个报文段的确认后才发送下一个报文段。③ 当发送缓存区的数据已经达到发送窗口大小的一半或已达到报文段的最大长度时,就立即发送一个报文段。</li>
+<li>优点: 提高TCP的传输效率。</li>
+<li>缺点: 降低数据传输的实时性。</li>
+<li>实现方法: 通过UNIX网络编程的TCP_NODELAY/关键字来禁用/开启Nagle算法。</li>
+</ol>
+<h3 id="糊涂窗口综合征"><a href="#糊涂窗口综合征" class="headerlink" title="糊涂窗口综合征"></a>糊涂窗口综合征</h3>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/20/c-dmem/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
