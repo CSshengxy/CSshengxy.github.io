@@ -28,7 +28,7 @@
 <meta property="og:description" content="要求实现简单的逻辑和算数运算函数,但是只能使用一个非常有限的C语言子集。本篇博客主要分享实验代码以及实验思路。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-06-05T08:35:55.000Z">
-<meta property="article:modified_time" content="2021-06-05T09:03:10.858Z">
+<meta property="article:modified_time" content="2021-06-05T09:49:13.979Z">
 <meta property="article:author" content="KeriCC">
 <meta name="twitter:card" content="summary">
 
@@ -184,7 +184,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-06-05 16:35:55 / 修改时间：17:03:10" itemprop="dateCreated datePublished" datetime="2021-06-05T16:35:55+08:00">2021-06-05</time>
+              <time title="创建时间：2021-06-05 16:35:55 / 修改时间：17:49:13" itemprop="dateCreated datePublished" datetime="2021-06-05T16:35:55+08:00">2021-06-05</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -223,8 +223,26 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int bitXor(int x, int y) &#123;</span><br><span class="line">  int res1 &#x3D; x &amp; y;</span><br><span class="line">  int res2 &#x3D; ~x &amp; ~y;</span><br><span class="line">  int res &#x3D; ~res1 &amp; ~res2;</span><br><span class="line">  return res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="补码可以表示的最小的数"><a href="#补码可以表示的最小的数" class="headerlink" title="补码可以表示的最小的数"></a>补码可以表示的最小的数</h4><p>可用运算符: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;</p>
 <p>最大操作数: 4</p>
-<p>实验思路: 根据补码规则, 最小的数首先应该是负数, 即首位为1。另外负数的补码为 $-2^31 + a$, 其中 a 是后31位表示的无符号数, 因此当a为0时, 补码对应的数最小为 $-2^31 + a$。</p>
+<p>实验思路: 根据补码规则, 最小的数首先应该是负数, 即首位为1。另外负数的补码为 $-2^{31} + a$, 其中 a 是后31位表示的无符号数, 因此当a为0时, 补码对应的数最小为 $-2^{31} + a$。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int tmin(void) &#123;</span><br><span class="line">  return 1 &lt;&lt; 31;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="判断是否是补码可以表示的最大数"><a href="#判断是否是补码可以表示的最大数" class="headerlink" title="判断是否是补码可以表示的最大数"></a>判断是否是补码可以表示的最大数</h4><p>可用运算符: ! ~ &amp; ^ | +</p>
+<p>最大操作数: 10</p>
+<p>实验思路: 如果x是补码可以表示的最大的数(0x7fffffff), 那么x + 1 会溢出, 等于0x80000000, 注意二进制补码只有0x7fffffff加一有这样的结果。而0x80000000有一个特点是, 0x80000000 + 0x80000000 溢出, 等于0x00000000。对于二进制补码来说, 只有 0x80000000和0x00000000与自身相加会等于0x00000000, 所以只要排除x + 1是0x00000000的可能即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int isTmax(int x) &#123;</span><br><span class="line">  int j1 &#x3D; x + x + 2;</span><br><span class="line">  int j2 &#x3D; !(x + 1);</span><br><span class="line">  return !(j1 | j2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="判断是否所有的奇数位都为1-从0开始计数"><a href="#判断是否所有的奇数位都为1-从0开始计数" class="headerlink" title="判断是否所有的奇数位都为1(从0开始计数)"></a>判断是否所有的奇数位都为1(从0开始计数)</h4><p>可用运算符: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;</p>
+<p>最大操作数: 12</p>
+<p>实验思路: 因为实验规定操作数不能大于0xff, 因此将32位的补码拆分为4段进行处理。首先制作一个偶数位全部为1,奇数位全部为0的32位补码y。如果x的所有奇数位都为1,那么 x | y 应该为0xffffffff。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int allOddBits(int x) &#123;</span><br><span class="line">  int even &#x3D; (0x55 &lt;&lt; 24) + (0x55 &lt;&lt; 16) + (0x55 &lt;&lt; 8) + 0x55;</span><br><span class="line">  int res &#x3D; !(~(x | even));</span><br><span class="line">  return res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="相反数计算"><a href="#相反数计算" class="headerlink" title="相反数计算"></a>相反数计算</h4><p>可用运算符: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;</p>
+<p>最大操作数: 5</p>
+<p>实验思路: 相反数为逐位取反加1。证明如下, 当x为正数时, 其相反数可以表示 $-2^{31} + (2^{31} - 1 - x) + 1$。当x为负数时, 其相反数可以表示为 $2^{31} - 1 - (x + 2^{31}) + 1$。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int negate(int x) &#123;</span><br><span class="line">  return ~x+1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="判断0x30-lt-x-lt-0x39-是否成立"><a href="#判断0x30-lt-x-lt-0x39-是否成立" class="headerlink" title="判断0x30 &lt;= x &lt;= 0x39 是否成立"></a>判断0x30 &lt;= x &lt;= 0x39 是否成立</h3><p>可用运算符: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;</p>
+<p>最大操作数: 15</p>
+<p>实验思路: 将问题拆解为两个子问题, 子问题1是判断最后4位表示的数是否在[0,9]的区间, 子问题2是判断5-8位是否为0x3。针对子问题1, 如果加0x6溢出(进位到第5位)则不属于[0,9]区间。针对子问题2, 通过异或来进行判断。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">int isAsciiDigit(int x) &#123;</span><br><span class="line">  int last4bits &#x3D; 0xF &amp; x;</span><br><span class="line">  int last4 &#x3D; ((last4bits + 0x6) &amp; 0xF0) &gt;&gt; 4; &#x2F;&#x2F; 如果满足条件会是0x0</span><br><span class="line">  int otherbits &#x3D; x &gt;&gt; 4;</span><br><span class="line">  int other &#x3D; otherbits ^ 0x3;  &#x2F;&#x2F; 如果满足条件会是0x00</span><br><span class="line">  int res &#x3D; (other &lt;&lt; 4) | last4;</span><br><span class="line">  return !res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
     </div>
 
     
@@ -301,7 +319,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%90%E4%BD%8D%E5%BC%82%E6%88%96%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">逐位异或的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A5%E7%A0%81%E5%8F%AF%E4%BB%A5%E8%A1%A8%E7%A4%BA%E7%9A%84%E6%9C%80%E5%B0%8F%E7%9A%84%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">补码可以表示的最小的数</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%90%E4%BD%8D%E5%BC%82%E6%88%96%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">逐位异或的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A5%E7%A0%81%E5%8F%AF%E4%BB%A5%E8%A1%A8%E7%A4%BA%E7%9A%84%E6%9C%80%E5%B0%8F%E7%9A%84%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">补码可以表示的最小的数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%98%AF%E8%A1%A5%E7%A0%81%E5%8F%AF%E4%BB%A5%E8%A1%A8%E7%A4%BA%E7%9A%84%E6%9C%80%E5%A4%A7%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">判断是否是补码可以表示的最大数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%89%80%E6%9C%89%E7%9A%84%E5%A5%87%E6%95%B0%E4%BD%8D%E9%83%BD%E4%B8%BA1-%E4%BB%8E0%E5%BC%80%E5%A7%8B%E8%AE%A1%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">判断是否所有的奇数位都为1(从0开始计数)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%8F%8D%E6%95%B0%E8%AE%A1%E7%AE%97"><span class="nav-number">5.</span> <span class="nav-text">相反数计算</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD0x30-lt-x-lt-0x39-%E6%98%AF%E5%90%A6%E6%88%90%E7%AB%8B"><span class="nav-number"></span> <span class="nav-text">判断0x30 &lt;&#x3D; x &lt;&#x3D; 0x39 是否成立</span></a></div>
       </div>
       <!--/noindex-->
 
