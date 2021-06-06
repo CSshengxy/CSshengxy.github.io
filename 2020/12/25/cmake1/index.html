@@ -222,8 +222,7 @@
       
         <p>从前一直都是用 Visual Studio 这样的集成的比较好的编译器编写一些简单的 C++ 课程作业, 开始接触 C++ 项目发现很多都在用CMake来编写配置文件, 当然也是因为比较喜欢在Ubuntu系统下编程hhh, 因此准备相对系统的学习一下 CMake 配置文件编写方法。从朋友那里拷贝了 Milan Yadav 的 CMake 讲解视频, 讲的比较细致。结合 <a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/manual/cmake-commands.7.html">CMake 官方文档</a>在这篇博客中做一个整理记录。</p>
 <a id="more"></a>
-
-<p>CMake 用来生成编译程序的 Makefile 文件。CMake 具有跨平台的特点, 即同一个CMake配置文件可以针对不同平台生成相应的 Makefile 文件。使用 CMake 生成可执行文件的流程为: ① 创建 CMakeLists.txt 配置文件。② 执行 cmake &lt;PATH&gt; 指令编译生成 Makefile 文件(&lt;PATH&gt; 为 CMakeLists.txt 所在的路径)。③ 执行 make 指令生成可执行文件。</p>
+<p>CMake 用来生成编译程序的 Makefile 文件。CMake 具有跨平台的特点, 即同一个CMake配置文件可以针对不同平台生成相应的 Makefile 文件。使用 CMake 生成可执行文件的流程为: ① 创建 CMakeLists.txt 配置文件。② 执行 cmake \<PATH\> 指令编译生成 Makefile 文件(\<PATH\> 为 CMakeLists.txt 所在的路径)。③ 执行 make 指令生成可执行文件。</p>
 <h3 id="CMakeLists-txt-文件格式"><a href="#CMakeLists-txt-文件格式" class="headerlink" title="CMakeLists.txt 文件格式"></a>CMakeLists.txt 文件格式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">command1(arg_a1 arg_a2 arg_a3 ...)</span><br><span class="line">command2(arg_b1 arg_b2 arg_b3 ...)</span><br><span class="line">command3(arg_c1</span><br><span class="line">arg_c2</span><br><span class="line">...)</span><br><span class="line"></span><br><span class="line">command4(arg_d1 arg_d2 arg_d3 ...)</span><br></pre></td></tr></table></figure>
 <h3 id="CMake-基本指令"><a href="#CMake-基本指令" class="headerlink" title="CMake 基本指令"></a>CMake 基本指令</h3><p><code>add_executable(&lt;EXEC-NAME&gt; &lt;SOURCE-FILES&gt;)</code> <em>依靠指定的源文件创建可执行文件</em></p>
 <p><code>project(&lt;PROJECT-NAME&gt; &lt;OTHER-INFO&gt;)</code><em>设置项目的名字和基础信息</em></p>
@@ -340,13 +339,13 @@ tcpserv
 <h4 id="5-条件语句"><a href="#5-条件语句" class="headerlink" title="5. 条件语句"></a>5. 条件语句</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">if(&lt;condition&gt;)</span><br><span class="line">    &lt;commands&gt;</span><br><span class="line">elseif(&lt;condition&gt;)</span><br><span class="line">    &lt;commands&gt;</span><br><span class="line">else</span><br><span class="line">    &lt;commands&gt;</span><br><span class="line">endif()</span><br></pre></td></tr></table></figure>
 <p><code>1, ON, YES, TRUE, Y, a non-zero number</code> <em>TRUE 常量</em></p>
 <p><code>0, OFF, NO, FALSE, N, IGNORE, NOTFOUND, the empty string, string ending with -NOTFOUND</code> <em>FALSE 常量</em></p>
-<p>除了上述常量值之外的则被认为是变量或字符串, 若 &lt;condition&gt; 为变量, 相当于自带解引用, 即根据该变量所表示的字符串来进行判断。 关于 &lt;condition&gt; 还有一些特殊的关键字 (这里列举一部分):</p>
+<p>除了上述常量值之外的则被认为是变量或字符串, 若 \<condition\> 为变量, 相当于自带解引用, 即根据该变量所表示的字符串来进行判断。 关于 \<condition\> 还有一些特殊的关键字 (这里列举一部分):</p>
 <p>一元判断:  <code>DEFINED</code>, <code>COMMAND</code> 和 <code>EXISTS</code>, 分别用来判断变量, 命令和路径是否存在。</p>
 <p>二元判断: <code>STRLESS</code>, <code>STRGREATER</code>, <code>STREQUAL</code> 用来比较两个字符串。</p>
 <p>布尔运算符: <code>NOT</code>, <code>AND</code>, <code>OR</code> 与 python 相似。</p>
 <h4 id="6-循环语句"><a href="#6-循环语句" class="headerlink" title="6. 循环语句"></a>6. 循环语句</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">while(&lt;condition&gt;)</span><br><span class="line">    &lt;commands&gt;</span><br><span class="line">endwhile()</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(&lt;loop_variable&gt; &lt;items&gt;)</span><br><span class="line">    &lt;commands&gt;</span><br><span class="line">endforeach()</span><br></pre></td></tr></table></figure>
-<p>foreach 可以使用 RANGE 关键字, 如 <code>foreach(x RANGE 10)</code>, <code>foreach(x RANGE 10 20)</code>, <code>foreach(x RANGE 10 20 3)</code>。RANGE 关键字后分别为 &lt;START&gt; &lt;END&gt; &lt;STEP&gt;, RANGE 的范围 &lt;START&gt; 和 &lt;END&gt; 均包含在内。</p>
+<p>foreach 可以使用 RANGE 关键字, 如 <code>foreach(x RANGE 10)</code>, <code>foreach(x RANGE 10 20)</code>, <code>foreach(x RANGE 10 20 3)</code>。RANGE 关键字后分别为 \<START\> \<END\> \<STEP\>, RANGE 的范围 \<START\> 和 \<END\> 均包含在内。</p>
 
     </div>
 
@@ -516,6 +515,8 @@ tcpserv
 
 
 
+
+  
 
   
 
